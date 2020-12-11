@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang='zh-cn'>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title></title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      body{
+        background: #32353a;
+      }
+      .box{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 400px;
+        background-color: #aaa;
+        margin-top: 100px;
+      }
+      .form-horizontal{
+        width: 50%;
+      }
+      .col-sm-5{
+        padding-top: 12px;
+        font-size: 16px;
+      }
+    </style>
+    <!--[if lt IE 9]>
+    <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+  <a href="/">返回首页</a>
+    <div class="box">
+      <div class="form-horizontal" action="" method="post">
+        <div class="form-group">
+          <label for="username" class="col-sm-3 control-label">用户名:</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" id="username" placeholder="用户名">
+          </div>
+          <div class="col-sm-3 control-label">
+            <span>用户名不能为空</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="password" class="col-sm-3 control-label">密码:</label>
+          <div class="col-sm-6">
+            <input type="password" class="form-control" id="password" placeholder="密码">
+          </div>
+          <div class="col-sm-3 control-label">
+            <span>用户名不能为空</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-4 col-sm-1">
+            <button type="button" class="btn btn-primary" >登录</button>
+          </div>
+          <div class="col-sm-offset-1 col-sm-5">
+            没有账号?点击<a href="/messageProj/user/regist">注册</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+    <script>
+      //给按钮绑定单击事件
+      $("button").on("click",function () {
+        //清空两个span提示语
+        $("span").html("");
+        //获取用户名和密码
+        var username = $("#username").val().trim();
+        var password = $("#password").val().trim();
+        if(username ==""){
+          // 如果用户名为空,则提示红字
+          $("span").eq(0).html("用户名不能为空").css("color","red");
+          return ;
+        }
+        if(password ==""){
+          // 如果密码为空,则提示红字
+          $("span").eq(1).html("密码不能为空").css("color","red");
+          return ;
+        }
+        //用户名密码都不为空发送请求
+        $.ajax({
+          url:"/messageProj/user/login",
+          method:"post",
+          data:{
+            username:username,
+            password:password
+          },
+          success:function (result) {
+            if(result.status==1){
+              alert(result.msg);
+              return;
+            }
+            //登陆成功
+            alert(result.msg);
+            //跳转到首页
+            location.href = "/messageProj";
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
